@@ -1,0 +1,23 @@
+name: MZP-Economy
+main: minecraft.economy.zocker.pro.Main
+version: 0.0.1
+author: ludgart
+website: https://www.minecraftzocker.net
+depends: [MZP-Core, Vault]
+api-version: 1.13
+
+commands:
+  economy:
+    usage: /<command>
+    description: economy
+    aliases: [economy]
+    permission: mzp.economy
+  pay:
+    usage: /<command>
+    description: pay
+    aliases: [sende]
+    permission: mzp.economy.pay
+  balance:
+    usage: /<command>
+    description: pocket
+    aliases: [pocket, mone, money, geld, crumbs, crumb, cash]    
