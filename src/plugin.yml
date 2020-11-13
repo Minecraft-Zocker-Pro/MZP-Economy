@@ -3,7 +3,7 @@ main: minecraft.economy.zocker.pro.Main
 version: 0.0.1
 author: ludgart
 website: https://www.minecraftzocker.net
-depends: [MZP-Core, Vault]
+depend: [MZP-Core, Vault]
 api-version: 1.13
 
 commands:

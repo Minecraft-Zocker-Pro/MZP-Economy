@@ -100,13 +100,12 @@ public class Main extends CorePlugin {
 			ECONOMY_DATABASE_TABLE = "player_economy_" + StorageManager.getServerName();
 		}
 
-		String createTable = "CREATE TABLE IF NOT EXISTS " + ECONOMY_DATABASE_TABLE + " ( uuid VARCHAR(36) NOT NULL, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
+		String createTable = "CREATE TABLE IF NOT EXISTS '" + ECONOMY_DATABASE_TABLE + "' ( uuid VARCHAR(36) NOT NULL UNIQUE, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
 
 		if (StorageManager.isMySQL()) {
 			assert StorageManager.getMySQLDatabase() != null : "Create table failed.";
 			StorageManager.getMySQLDatabase().createTable(createTable);
 			return;
-
 		}
 
 		assert StorageManager.getSQLiteDatabase() != null : "Create table failed.";

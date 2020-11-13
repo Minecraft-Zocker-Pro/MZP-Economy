@@ -32,8 +32,8 @@ public class EconomyZocker extends Zocker {
 		return -1;
 	}
 
-	public CompletableFuture<String> getPocketAsync() {
-		return this.get(Main.ECONOMY_DATABASE_TABLE, "pocket");
+	public CompletableFuture<Double> getPocketAsync() {
+		return CompletableFuture.supplyAsync(this::getPocket);
 	}
 
 	public void setPocket(double pocket) {
