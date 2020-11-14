@@ -2,9 +2,9 @@ package minecraft.economy.zocker.pro.command;
 
 import minecraft.core.zocker.pro.Zocker;
 import minecraft.core.zocker.pro.command.Command;
+import minecraft.core.zocker.pro.compatibility.CompatibleMessage;
 import minecraft.core.zocker.pro.util.Util;
 import minecraft.economy.zocker.pro.Main;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import minecraft.core.zocker.pro.config.Config;
@@ -37,13 +37,14 @@ public class BalanceInfoCommand extends Command {
 
 			int pocketInt = (int) pocket;
 			if (pocketInt <= 1) {
-				player.sendMessage(TextComponent.fromLegacyText(prefix + message.getString("economy.command.balance.info")
+				CompatibleMessage.sendMessage(player, prefix + message.getString("economy.command.balance.info")
 					.replace("%balance%", Util.formatInt(pocketInt))
-					.replace("%currency%", message.getString("economy.currency.singular"))));
+					.replace("%currency%", message.getString("economy.currency.singular")));
 			} else {
-				player.sendMessage(TextComponent.fromLegacyText(prefix + message.getString("economy.command.balance.info")
-					.replace("%balance%", Util.formatInt(pocketInt))
-					.replace("%currency%", message.getString("economy.currency.majority"))));
+				CompatibleMessage.sendMessage(player,
+					prefix + message.getString("economy.command.balance.info")
+						.replace("%balance%", Util.formatInt(pocketInt))
+						.replace("%currency%", message.getString("economy.currency.majority")));
 			}
 		}
 	}

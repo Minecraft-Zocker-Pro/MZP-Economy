@@ -28,7 +28,7 @@ public class Main extends CorePlugin {
 		super.onEnable();
 		super.setDisplayItem(Material.GOLD_NUGGET);
 		super.setHelpCommand("economy");
-		this.setPluginName("MZP-Economy");
+		super.setPluginName("MZP-Economy");
 
 		PLUGIN = this;
 

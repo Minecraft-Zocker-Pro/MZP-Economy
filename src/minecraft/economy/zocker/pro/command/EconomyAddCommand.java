@@ -2,10 +2,10 @@ package minecraft.economy.zocker.pro.command;
 
 import minecraft.core.zocker.pro.OfflineZocker;
 import minecraft.core.zocker.pro.command.SubCommand;
+import minecraft.core.zocker.pro.compatibility.CompatibleMessage;
 import minecraft.core.zocker.pro.config.Config;
 import minecraft.core.zocker.pro.util.Util;
 import minecraft.economy.zocker.pro.Main;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,17 +37,19 @@ public class EconomyAddCommand extends SubCommand {
 			economyZocker.setPocket(economyZocker.getPocket() + amount);
 
 			if (amount <= 1) {
-				sender.sendMessage(TextComponent.fromLegacyText(prefix + message.getString("economy.command.balance.add")
-					.replace("%player%", target.getName())
-					.replace("%balance%", Util.formatInt((int) amount))
-					.replace("%currency%", message.getString("economy.currency.singular"))));
+				CompatibleMessage.sendMessage((Player) sender,
+					prefix + message.getString("economy.command.balance.add")
+						.replace("%player%", target.getName())
+						.replace("%balance%", Util.formatInt((int) amount))
+						.replace("%currency%", message.getString("economy.currency.singular")));
 				return;
 			}
 
-			sender.sendMessage(TextComponent.fromLegacyText(prefix + message.getString("economy.command.balance.add")
-				.replace("%player%", target.getName())
-				.replace("%balance%", Util.formatInt((int) amount))
-				.replace("%currency%", message.getString("economy.currency.majority"))));
+			CompatibleMessage.sendMessage((Player) sender,
+				prefix + message.getString("economy.command.balance.add")
+					.replace("%player%", target.getName())
+					.replace("%balance%", Util.formatInt((int) amount))
+					.replace("%currency%", message.getString("economy.currency.majority")));
 			return;
 		}
 
