@@ -1,6 +1,7 @@
 package minecraft.economy.zocker.pro;
 
 import minecraft.core.zocker.pro.CorePlugin;
+import minecraft.core.zocker.pro.compatibility.ServerVersion;
 import minecraft.core.zocker.pro.config.Config;
 import minecraft.core.zocker.pro.storage.StorageManager;
 import minecraft.economy.zocker.pro.command.BalanceInfoCommand;
@@ -100,7 +101,12 @@ public class Main extends CorePlugin {
 			ECONOMY_DATABASE_TABLE = "player_economy_" + StorageManager.getServerName();
 		}
 
-		String createTable = "CREATE TABLE IF NOT EXISTS '" + ECONOMY_DATABASE_TABLE + "' ( uuid VARCHAR(36) NOT NULL UNIQUE, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
+		String createTable;
+		if (ServerVersion.isServerVersionAtOrBelow(ServerVersion.V1_8)) {
+			createTable = "CREATE TABLE IF NOT EXISTS '" + ECONOMY_DATABASE_TABLE + "' (uuid VARCHAR(36) NOT NULL UNIQUE, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
+		} else {
+			createTable = "CREATE TABLE IF NOT EXISTS " + ECONOMY_DATABASE_TABLE + " (uuid VARCHAR(36) NOT NULL UNIQUE, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
+		}
 
 		if (StorageManager.isMySQL()) {
 			assert StorageManager.getMySQLDatabase() != null : "Create table failed.";
