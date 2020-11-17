@@ -37,7 +37,7 @@ public class EconomyAddCommand extends SubCommand {
 			economyZocker.setPocket(economyZocker.getPocket() + amount);
 
 			if (amount <= 1) {
-				CompatibleMessage.sendMessage((Player) sender,
+				CompatibleMessage.sendMessage(sender,
 					prefix + message.getString("economy.command.balance.add")
 						.replace("%player%", target.getName())
 						.replace("%balance%", Util.formatInt((int) amount))
@@ -45,7 +45,7 @@ public class EconomyAddCommand extends SubCommand {
 				return;
 			}
 
-			CompatibleMessage.sendMessage((Player) sender,
+			CompatibleMessage.sendMessage(sender,
 				prefix + message.getString("economy.command.balance.add")
 					.replace("%player%", target.getName())
 					.replace("%balance%", Util.formatInt((int) amount))
