@@ -1,6 +1,6 @@
 name: MZP-Economy
 main: minecraft.economy.zocker.pro.Main
-version: 0.0.4
+version: 0.0.5
 author: ludgart
 website: https://www.minecraftzocker.net
 depend: [MZP-Core, Vault]
