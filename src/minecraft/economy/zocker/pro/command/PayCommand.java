@@ -2,6 +2,8 @@ package minecraft.economy.zocker.pro.command;
 
 import minecraft.core.zocker.pro.Zocker;
 import minecraft.core.zocker.pro.command.Command;
+import minecraft.core.zocker.pro.compatibility.CompatibleMessage;
+import minecraft.core.zocker.pro.compatibility.CompatibleSound;
 import minecraft.core.zocker.pro.config.Config;
 import minecraft.core.zocker.pro.util.Util;
 import minecraft.economy.zocker.pro.Main;
@@ -34,13 +36,13 @@ public class PayCommand extends Command {
 			String prefix = message.getString("economy.prefix");
 
 			if (args.length <= 1) {
-				sender.sendMessage(prefix + "Type §6/pay <player> <amount>");
+				CompatibleMessage.sendMessage(sender, prefix + "Type §6/pay <player> <amount>");
 				return;
 			}
 
 			if (args.length == 2) {
 				if (sender.getName().equals(args[0])) {
-					sender.sendMessage(prefix + message.getString("economy.command.balance.self")
+					CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.self")
 						.replace("%currency%", message.getString("economy.currency.singular")));
 					return;
 				}
@@ -51,7 +53,28 @@ public class PayCommand extends Command {
 					if (playerReceiver.isOnline()) {
 						if (Character.isDigit(args[1].toCharArray()[0])) {
 							double balance = economyZocker.getPocket();
-							double amount = Double.valueOf(args[1]);
+							double amount = Double.parseDouble(args[1]);
+
+							if (Main.ECONOMY_CONFIG.getBool("economy.pay.fee.enabled")) {
+								double feeFixed = Main.ECONOMY_CONFIG.getDouble("economy.pay.fee.fixed");
+
+								double feeAmount = 0;
+
+								double feePercent = Main.ECONOMY_CONFIG.getDouble("economy.pay.fee.percent");
+								if (feePercent > 0) {
+
+									feeAmount = amount * feePercent / 100;
+								}
+
+								if (balance <= (amount + feeAmount + feeFixed)) {
+									CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.pay.fee.insufficient")
+										.replace("%currency%", message.getString("economy.currency.majority"))
+										.replace("%fee%", Util.formatInt((int) (feeFixed + feeAmount))));
+									return;
+								}
+
+								economyZocker.setPocket(economyZocker.getPocket() - (feeAmount + feeFixed));
+							}
 
 							if (balance >= amount) {
 								EconomyZocker zockerReceiverEconomy = new EconomyZocker(playerReceiver.getUniqueId());
@@ -60,40 +83,42 @@ public class PayCommand extends Command {
 								economyZocker.setPocket(economyZocker.getPocket() - amount);
 
 								if (amount <= 1) {
-									playerReceiver.sendMessage(prefix + message.getString("economy.command.balance.received")
+									CompatibleMessage.sendMessage(playerReceiver, prefix + message.getString("economy.command.balance.received")
 										.replace("%player%", sender.getName())
 										.replace("%balance%", Util.formatInt((int) amount))
 										.replace("%currency%", message.getString("economy.currency.singular")));
 
-									sender.sendMessage(prefix + message.getString("economy.command.balance.send")
+									CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.send")
 										.replace("%player%", playerReceiver.getName())
 										.replace("%balance%", Util.formatInt((int) amount))
 										.replace("%currency%", message.getString("economy.currency.singular")));
 									return;
 								}
 
-								playerReceiver.sendMessage(prefix + message.getString("economy.command.balance.received")
+								CompatibleMessage.sendMessage(playerReceiver, prefix + message.getString("economy.command.balance.received")
 									.replace("%player%", sender.getName())
 									.replace("%balance%", Util.formatInt((int) amount))
 									.replace("%currency%", message.getString("economy.currency.majority")));
 
-								sender.sendMessage(prefix + message.getString("economy.command.balance.send")
+								CompatibleSound.ENTITY_CHICKEN_EGG.play(playerReceiver);
+
+								CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.send")
 									.replace("%player%", playerReceiver.getName())
 									.replace("%balance%", Util.formatInt((int) amount))
 									.replace("%currency%", message.getString("economy.currency.majority")));
 								return;
 							}
 
-							sender.sendMessage(prefix + message.getString("economy.command.balance.insufficient")
+							CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.insufficient")
 								.replace("%currency%", message.getString("economy.currency.majority")));
 							return;
 						}
 
-						sender.sendMessage(prefix + "Type §6/pay <player> <amount>");
+						CompatibleMessage.sendMessage(sender, prefix + "Type §6/pay <player> <amount>");
 						return;
 					}
 				}
-				sender.sendMessage(prefix + message.getString("economy.player.offline").replace("%player%", args[0]));
+				CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.player.offline").replace("%player%", args[0]));
 			}
 		}
 	}
