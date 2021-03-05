@@ -56,8 +56,11 @@ public class Main extends CorePlugin {
 		ECONOMY_CONFIG.set("economy.global", false, "0.0.1");
 		ECONOMY_CONFIG.set("economy.balance.start", 1000, "0.0.1");
 
-		ECONOMY_CONFIG.save();
+		ECONOMY_CONFIG.set("economy.pay.fee.enabled", true, "0.0.1");
+		ECONOMY_CONFIG.set("economy.pay.fee.fixed", 25, "0.0.1");
+		ECONOMY_CONFIG.set("economy.pay.fee.percent", 5, "0.0.1");
 
+		ECONOMY_CONFIG.save();
 
 		ECONOMY_MESSAGE = new Config("message.yml", "MZP-Economy");
 
@@ -78,8 +81,9 @@ public class Main extends CorePlugin {
 		ECONOMY_MESSAGE.set("economy.command.balance.remove", "Player &6%player% &3removed &6%balance% %currency%&3.", "0.0.1");
 		ECONOMY_MESSAGE.set("economy.command.balance.check", "&6%player% &3 contains &6%balance% %currency%&3.", "0.0.1");
 
+		ECONOMY_MESSAGE.set("economy.command.pay.fee.insufficient", "&3You need &6%fee% %currency% &3more to pay the fees!", "0.0.6");
 
-		ECONOMY_MESSAGE.save();
+		ECONOMY_MESSAGE.setVersion("0.0.6", true);
 	}
 
 	@Override
@@ -101,12 +105,7 @@ public class Main extends CorePlugin {
 			ECONOMY_DATABASE_TABLE = "player_economy_" + StorageManager.getServerName();
 		}
 
-		String createTable;
-		if (ServerVersion.isServerVersionAtOrBelow(ServerVersion.V1_8)) {
-			createTable = "CREATE TABLE IF NOT EXISTS '" + ECONOMY_DATABASE_TABLE + "' (uuid VARCHAR(36) NOT NULL UNIQUE, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
-		} else {
-			createTable = "CREATE TABLE IF NOT EXISTS " + ECONOMY_DATABASE_TABLE + " (uuid VARCHAR(36) NOT NULL UNIQUE, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
-		}
+		String createTable = "CREATE TABLE IF NOT EXISTS `" + ECONOMY_DATABASE_TABLE + "` (uuid VARCHAR(36) NOT NULL UNIQUE, pocket DOUBLE NOT NULL, FOREIGN KEY (uuid) REFERENCES player (uuid) ON DELETE CASCADE);";
 
 		if (StorageManager.isMySQL()) {
 			assert StorageManager.getMySQLDatabase() != null : "Create table failed.";

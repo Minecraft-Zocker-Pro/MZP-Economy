@@ -1,6 +1,7 @@
 package minecraft.economy.zocker.pro.command;
 
 import minecraft.core.zocker.pro.OfflineZocker;
+import minecraft.core.zocker.pro.compatibility.CompatibleMessage;
 import minecraft.core.zocker.pro.config.Config;
 import minecraft.core.zocker.pro.util.Util;
 import minecraft.economy.zocker.pro.Main;
@@ -22,28 +23,28 @@ public class EconomyRemoveCommand extends SubCommand {
 	@Override
 	public void onExecute(CommandSender sender, String[] args) {
 		if (args.length <= 1) {
-			sender.sendMessage(getUsage());
+			CompatibleMessage.sendMessage(sender, getUsage());
 			return;
 		}
 
 		Config message = Main.ECONOMY_MESSAGE;
 		String prefix = message.getString("economy.prefix");
 		Player target = Bukkit.getPlayer(args[0]);
-		double amount = Double.valueOf(args[1]);
+		double amount = Double.parseDouble(args[1]);
 
 		if (target != null && target.isOnline()) {
 			EconomyZocker economyZocker = new EconomyZocker(target.getUniqueId());
 			economyZocker.setPocket(economyZocker.getPocket() - amount);
 
 			if (amount <= 1) {
-				sender.sendMessage(prefix + message.getString("economy.command.balance.remove")
+				CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.remove")
 					.replace("%player%", target.getName())
 					.replace("%balance%", Util.formatInt((int) amount))
 					.replace("%currency%", message.getString("economy.currency.singular")));
 				return;
 			}
 
-			sender.sendMessage(prefix + message.getString("economy.command.balance.remove")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.remove")
 				.replace("%player%", target.getName())
 				.replace("%balance%", Util.formatInt((int) amount))
 				.replace("%currency%", message.getString("economy.currency.majority")));
@@ -52,7 +53,7 @@ public class EconomyRemoveCommand extends SubCommand {
 
 		UUID uuidOffline = OfflineZocker.fetchUUID(args[0]);
 		if (uuidOffline == null) {
-			sender.sendMessage(prefix + message.getString("economy.player.offline").replace("%player%", args[0]));
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.player.offline").replace("%player%", args[0]));
 			return;
 		}
 
@@ -60,18 +61,17 @@ public class EconomyRemoveCommand extends SubCommand {
 		economyZocker.setPocket(economyZocker.getPocket() - amount);
 
 		if (amount <= 1) {
-			sender.sendMessage(prefix + message.getString("economy.command.balance.remove")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.remove")
 				.replace("%player%", target.getName())
 				.replace("%balance%", Util.formatInt((int) amount))
 				.replace("%currency%", message.getString("economy.currency.singular")));
 			return;
 		}
 
-		sender.sendMessage(prefix + message.getString("economy.command.balance.remove")
+		CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.remove")
 			.replace("%player%", OfflineZocker.getName(uuidOffline))
 			.replace("%balance%", Util.formatInt((int) amount))
 			.replace("%currency%", message.getString("economy.currency.majority")));
-		return;
 	}
 
 	@Override

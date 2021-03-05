@@ -1,6 +1,7 @@
 package minecraft.economy.zocker.pro.command;
 
 import minecraft.core.zocker.pro.OfflineZocker;
+import minecraft.core.zocker.pro.compatibility.CompatibleMessage;
 import minecraft.core.zocker.pro.config.Config;
 import minecraft.core.zocker.pro.util.Util;
 import minecraft.economy.zocker.pro.Main;
@@ -27,28 +28,28 @@ public class EconomySetCommand extends SubCommand {
 	@Override
 	public void onExecute(CommandSender sender, String[] args) {
 		if (args.length <= 1) {
-			sender.sendMessage(getUsage());
+			CompatibleMessage.sendMessage(sender, getUsage());
 			return;
 		}
 
 		Player target = Bukkit.getPlayer(args[0]);
 		Config message = Main.ECONOMY_MESSAGE;
 		String prefix = message.getString("economy.prefix");
-		double amount = Double.valueOf(args[1]);
+		double amount = Double.parseDouble(args[1]);
 
 		if (target != null && target.isOnline()) {
 			EconomyZocker economyZocker = new EconomyZocker(target.getUniqueId());
 			economyZocker.setPocket(amount);
 
 			if (amount <= 1) {
-				sender.sendMessage(prefix + message.getString("economy.command.balance.set")
+				CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.set")
 					.replace("%player%", target.getName())
 					.replace("%balance%", Util.formatInt((int) amount))
 					.replace("%currency%", message.getString("economy.currency.singular")));
 				return;
 			}
 
-			sender.sendMessage(prefix + message.getString("economy.command.balance.set")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.set")
 				.replace("%player%", target.getName())
 				.replace("%balance%", Util.formatInt((int) amount))
 				.replace("%currency%", message.getString("economy.currency.majority")));
@@ -57,21 +58,21 @@ public class EconomySetCommand extends SubCommand {
 
 		UUID uuidOffline = OfflineZocker.fetchUUID(args[0]);
 		if (uuidOffline == null) {
-			sender.sendMessage(prefix + message.getString("economy.player.offline").replace("%player%", args[0]));
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.player.offline").replace("%player%", args[0]));
 			return;
 		}
 
 		new EconomyZocker(uuidOffline).setPocket(amount);
 
 		if (amount <= 1) {
-			sender.sendMessage(prefix + message.getString("economy.command.balance.set")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.set")
 				.replace("%player%", OfflineZocker.getName(uuidOffline))
 				.replace("%balance%", Util.formatInt((int) amount))
 				.replace("%currency%", message.getString("economy.currency.majority")));
 			return;
 		}
 
-		sender.sendMessage(prefix + message.getString("economy.command.balance.set")
+		CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.set")
 			.replace("%player%", OfflineZocker.getName(uuidOffline))
 			.replace("%balance%", Util.formatInt((int) amount))
 			.replace("%currency%", message.getString("economy.currency.majority")));

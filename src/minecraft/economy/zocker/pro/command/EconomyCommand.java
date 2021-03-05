@@ -2,6 +2,7 @@ package minecraft.economy.zocker.pro.command;
 
 import minecraft.core.zocker.pro.command.Command;
 import minecraft.core.zocker.pro.command.SubCommand;
+import minecraft.core.zocker.pro.compatibility.CompatibleMessage;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -23,13 +24,13 @@ public class EconomyCommand extends Command {
 	@Override
 	public void onExecute(CommandSender sender, String[] args) {
 		if (args.length == 0) {
-			sender.sendMessage("§7--------------------");
-			sender.sendMessage("§6§lCommands");
-			sender.sendMessage("§3/economy check <zocker>");
-			sender.sendMessage("§3/economy set <zocker> <crumbs>");
-			sender.sendMessage("§3/economy add <zocker> <crumbs>");
-			sender.sendMessage("§3/economy remove <zocker> <crumbs>");
-			sender.sendMessage("§7--------------------");
+			CompatibleMessage.sendMessage(sender, "§7--------------------");
+			CompatibleMessage.sendMessage(sender, "§6§lCommands");
+			CompatibleMessage.sendMessage(sender, "§3/economy check <zocker>");
+			CompatibleMessage.sendMessage(sender, "§3/economy set <zocker> <crumbs>");
+			CompatibleMessage.sendMessage(sender, "§3/economy add <zocker> <crumbs>");
+			CompatibleMessage.sendMessage(sender, "§3/economy remove <zocker> <crumbs>");
+			CompatibleMessage.sendMessage(sender, "§7--------------------");
 			return;
 		}
 

@@ -1,6 +1,7 @@
 package minecraft.economy.zocker.pro.command;
 
 import minecraft.core.zocker.pro.OfflineZocker;
+import minecraft.core.zocker.pro.compatibility.CompatibleMessage;
 import minecraft.core.zocker.pro.config.Config;
 import minecraft.core.zocker.pro.util.Util;
 import minecraft.economy.zocker.pro.Main;
@@ -22,7 +23,7 @@ public class EconomyCheckCommand extends SubCommand {
 	@Override
 	public void onExecute(CommandSender sender, String[] args) {
 		if (args.length == 0) {
-			sender.sendMessage(getUsage());
+			CompatibleMessage.sendMessage(sender, getUsage());
 			return;
 		}
 
@@ -34,7 +35,7 @@ public class EconomyCheckCommand extends SubCommand {
 			EconomyZocker economyZocker = new EconomyZocker(target.getUniqueId());
 			double pocket = economyZocker.getPocket();
 			if (pocket <= 1) {
-				sender.sendMessage(prefix + message.getString("economy.command.balance.check")
+				CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.check")
 					.replace("%player%", target.getName())
 					.replace("%balance%", Util.formatInt((int) pocket))
 					.replace("%currency%", message.getString("economy.currency.singular")));
@@ -42,7 +43,7 @@ public class EconomyCheckCommand extends SubCommand {
 				return;
 			}
 
-			sender.sendMessage(prefix + message.getString("economy.command.balance.check")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.check")
 				.replace("%player%", target.getName())
 				.replace("%balance%", Util.formatInt((int) pocket))
 				.replace("%currency%", message.getString("economy.currency.majority")));
@@ -52,7 +53,7 @@ public class EconomyCheckCommand extends SubCommand {
 
 		UUID uuidOffline = OfflineZocker.fetchUUID(args[0]);
 		if (uuidOffline == null) {
-			sender.sendMessage(prefix + message.getString("economy.player.offline")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.player.offline")
 				.replace("%player%", args[0]));
 			return;
 		}
@@ -60,7 +61,7 @@ public class EconomyCheckCommand extends SubCommand {
 		double pocket = new EconomyZocker(uuidOffline).getPocket();
 
 		if (pocket <= 1) {
-			sender.sendMessage(prefix + message.getString("economy.command.balance.check")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.check")
 				.replace("%player%", OfflineZocker.getName(uuidOffline))
 				.replace("%balance%", Util.formatInt((int) pocket))
 				.replace("%currency%", message.getString("economy.currency.singular")));
@@ -68,7 +69,7 @@ public class EconomyCheckCommand extends SubCommand {
 			return;
 		}
 
-		sender.sendMessage(prefix + message.getString("economy.command.balance.check")
+		CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.check")
 			.replace("%player%", target.getName())
 			.replace("%balance%", Util.formatInt((int) pocket))
 			.replace("%currency%", message.getString("economy.currency.majority")));

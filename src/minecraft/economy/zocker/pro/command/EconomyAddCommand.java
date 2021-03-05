@@ -23,14 +23,14 @@ public class EconomyAddCommand extends SubCommand {
 	@Override
 	public void onExecute(CommandSender sender, String[] args) {
 		if (args.length <= 1) {
-			sender.sendMessage(getUsage());
+			CompatibleMessage.sendMessage(sender, getUsage());
 			return;
 		}
 
 		Config message = Main.ECONOMY_MESSAGE;
 		String prefix = message.getString("economy.prefix");
 		Player target = Bukkit.getPlayer(args[0]);
-		double amount = Double.valueOf(args[1]);
+		double amount = Double.parseDouble(args[1]);
 
 		if (target != null && target.isOnline()) {
 			EconomyZocker economyZocker = new EconomyZocker(target.getUniqueId());
@@ -55,7 +55,7 @@ public class EconomyAddCommand extends SubCommand {
 
 		UUID uuidOffline = OfflineZocker.fetchUUID(args[0]);
 		if (uuidOffline == null) {
-			sender.sendMessage(prefix + message.getString("economy.player.offline")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.player.offline")
 				.replace("%player%", args[0]));
 			return;
 		}
@@ -64,14 +64,14 @@ public class EconomyAddCommand extends SubCommand {
 		economyZocker.setPocket(economyZocker.getPocket() + amount);
 
 		if (amount <= 1) {
-			sender.sendMessage(prefix + message.getString("economy.command.balance.add")
+			CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.add")
 				.replace("%player%", OfflineZocker.getName(uuidOffline))
 				.replace("%balance%", Util.formatInt((int) amount))
 				.replace("%currency%", message.getString("economy.currency.singular")));
 			return;
 		}
 
-		sender.sendMessage(prefix + message.getString("economy.command.balance.add")
+		CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.add")
 			.replace("%player%", OfflineZocker.getName(uuidOffline))
 			.replace("%balance%", Util.formatInt((int) amount))
 			.replace("%currency%", message.getString("economy.currency.majority")));
