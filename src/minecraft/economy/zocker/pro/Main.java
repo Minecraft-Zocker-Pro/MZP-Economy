@@ -79,7 +79,7 @@ public class Main extends CorePlugin {
 		ECONOMY_MESSAGE.set("economy.command.balance.add", "Player &6%player% &3added &6%balance% %currency%&3.", "0.0.1");
 		ECONOMY_MESSAGE.set("economy.command.balance.set", "Player &6%player% &3set &6%balance% %currency%&3.", "0.0.1");
 		ECONOMY_MESSAGE.set("economy.command.balance.remove", "Player &6%player% &3removed &6%balance% %currency%&3.", "0.0.1");
-		ECONOMY_MESSAGE.set("economy.command.balance.check", "&6%player% &3 contains &6%balance% %currency%&3.", "0.0.1");
+		ECONOMY_MESSAGE.set("economy.command.balance.check", "&6%player% &3contains &6%balance% %currency%&3.", "0.0.1");
 
 		ECONOMY_MESSAGE.set("economy.command.pay.fee.insufficient", "&3You need &6%fee% %currency% &3to pay the fees!", "0.0.6");
 

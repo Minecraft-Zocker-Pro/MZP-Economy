@@ -70,7 +70,7 @@ public class EconomyCheckCommand extends SubCommand {
 		}
 
 		CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.check")
-			.replace("%player%", target.getName())
+			.replace("%player%", args[0])
 			.replace("%balance%", Util.formatInt((int) pocket))
 			.replace("%currency%", message.getString("economy.currency.majority")));
 	}
