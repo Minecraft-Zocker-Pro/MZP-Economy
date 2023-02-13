@@ -59,6 +59,7 @@ public class Main extends CorePlugin {
 		ECONOMY_CONFIG.set("economy.pay.fee.enabled", true, "0.0.6");
 		ECONOMY_CONFIG.set("economy.pay.fee.fixed", 25, "0.0.6");
 		ECONOMY_CONFIG.set("economy.pay.fee.percent", 5, "0.0.6");
+		ECONOMY_CONFIG.set("economy.pay.minimum.amount", 100, "0.0.8");
 
 		ECONOMY_CONFIG.setVersion("0.0.6", true);
 
@@ -82,8 +83,9 @@ public class Main extends CorePlugin {
 		ECONOMY_MESSAGE.set("economy.command.balance.check", "&6%player% &3contains &6%balance% %currency%&3.", "0.0.1");
 
 		ECONOMY_MESSAGE.set("economy.command.pay.fee.insufficient", "&3You need &6%fee% %currency% &3to pay the fees!", "0.0.6");
+		ECONOMY_MESSAGE.set("economy.command.pay.minimum.amount", "&3You need minimum &6%amount% %currency%&3 to send!", "0.0.8");
 
-		ECONOMY_MESSAGE.setVersion("0.0.6", true);
+		ECONOMY_MESSAGE.setVersion("0.0.8", true);
 	}
 
 	@Override

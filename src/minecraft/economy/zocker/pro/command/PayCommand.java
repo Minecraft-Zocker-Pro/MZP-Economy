@@ -55,6 +55,15 @@ public class PayCommand extends Command {
 							double balance = economyZocker.getPocket();
 							double amount = Double.parseDouble(args[1]);
 
+							// check if player send minimum amount
+							if (amount < Main.ECONOMY_CONFIG.getDouble("economy.pay.minimum.amount")) {
+								CompatibleMessage.sendMessage(zocker.getPlayer(), prefix + message.getString("economy.command.pay.minimum.amount")
+									.replace("%currency%", message.getString("economy.currency.singular"))
+									.replace("%amount%", Main.ECONOMY_CONFIG.getString("economy.pay.minimum.amount")));
+								CompatibleSound.playErrorSound(zocker.getPlayer());
+								return;
+							}
+
 							if (Main.ECONOMY_CONFIG.getBool("economy.pay.fee.enabled")) {
 								double feeFixed = Main.ECONOMY_CONFIG.getDouble("economy.pay.fee.fixed");
 
@@ -70,6 +79,7 @@ public class PayCommand extends Command {
 									CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.pay.fee.insufficient")
 										.replace("%currency%", message.getString("economy.currency.majority"))
 										.replace("%fee%", Util.formatInt((int) (feeFixed + feeAmount))));
+									CompatibleSound.playErrorSound(zocker.getPlayer());
 									return;
 								}
 
@@ -111,6 +121,7 @@ public class PayCommand extends Command {
 
 							CompatibleMessage.sendMessage(sender, prefix + message.getString("economy.command.balance.insufficient")
 								.replace("%currency%", message.getString("economy.currency.majority")));
+							CompatibleSound.playErrorSound(zocker.getPlayer());
 							return;
 						}
 
